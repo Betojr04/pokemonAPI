@@ -81,19 +81,24 @@
         async function getPokemon(callback) {
             const pokemonNameOrId = document.getElementById('pokemon-name').value.trim().toLowerCase()
             const url = `https://pokeapi.co/api/v2/pokemon/${pokemonNameOrId}/`
+            const container = document.getElementById('pokemon-container');
             try {
+
+                container.innerHTML = "";
                 const response = await fetch(url)
                 if (!response.ok) {
-                    throw new Error(`Reponse status: ${response.status}`)
+                    throw new Error(`Pokémon Not Found! (Status: ${response.status})`);
                 }
+
                 const json = await response.json()
                 console.log(json)
                 callback(json)
             } catch (error) {
                 console.error(error.message)
 
-                const container = document.getElementById('pokemon-container')
-                container.innerHTML = `<p style="color: red;">${error.message}: Pokemon Not Found!</p>`
+                container.innerHTML = `<p style="color: red; font-weight: bold;">Error: ${error.message}</p>`;
+
+                document.getElementById('pokemon-name').value = "";
             }
         }
 
